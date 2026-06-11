@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useActionState} from 'react';
+import React, { useState, useEffect, useActionState } from 'react';
 import Item from './components/Item';
 import List from './components/List';
 import Search from './components/Search';
@@ -9,20 +9,20 @@ import './index.css'
 
 
 // Action para simular a adição de uma story no banco de dados
-async function addStoryAction(prevState, formData){
+async function addStoryAction(prevState, formData) {
   const title = formData.get('title');
   const author = formData.get('author');
 
-  console.log("Simulando adição de story: ", {title, author});
+  console.log("Simulando adição de story: ", { title, author });
 
 
-  await new Promise(resolve => setTimeout(resolve,1000));
+  await new Promise(resolve => setTimeout(resolve, 1000));
 
 
-  if( !title || !author){
-    return {success: false, message: 'Título e autor são obrigatórios!'};
-  } 
-  return {success: true, message: `Story '${title}' adicionada com sucesso!`};
+  if (!title || !author) {
+    return { success: false, message: 'Título e autor são obrigatórios!' };
+  }
+  return { success: true, message: `Story '${title}' adicionada com sucesso!` };
 }
 
 function App() {
@@ -46,30 +46,42 @@ function App() {
   }, [searchTerm]);
 
   // efeito para buscar dados da API
-  useEffect(() =>{
+  useEffect(() => {
     setIsLoading(true); // carregando = true
     setIsError(false); // diz que por agora não há erro
 
-    fetch(`https://hn.algolia.com/api/v1/search?query=${searchTerm}`)
-      .then(response => response.json()) // obtém a resposta e serializa ela
-                                         // (passar para tipo de dado estruturado)
-      .then(result => {
-        setStories(result.hits);  // atualiza o estado com as stories
-        setIsLoading(false);      // finaliza o carregamento
+    fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=0`)
+      .then(response => response.json())
+      .then(async result => {
+        const pokemonList = result.results.map(pokemon => {
+          const id = pokemon.url.split('/').slice(-2, -1)[0];
+          return {
+            id: id,
+            name: pokemon.name,
+            imageUrl: `https://raw.githubusercontent.com/PokeAPI/
+sprites/master/sprites/pokemon/${id}.png`,
+            url: pokemon.url
+          };
+
+        });
+        setStories(pokemonList);
+        setIsLoading(false);
       })
+
+      
       .catch(() => { // caso haja algum erro:
         setIsError(true);   // define o estado de erro
         setIsLoading(false); // finaliza o carregamento
       })
-  },[searchTerm])
+  }, [searchTerm])
 
   // Com verificação de erro
-    const filteredList = stories.filter(function (item) {
-      const title = (item && (item.title || item.story_title) || '').toLowerCase();
-        return title.includes(searchTerm.toLowerCase());
-      }
-    );
-  
+  const filteredList = stories.filter(function (item) {
+    const title = (item && (item.title || item.story_title) || '').toLowerCase();
+    return title.includes(searchTerm.toLowerCase());
+  }
+  );
+
   // renderizar elementos na tela
   return (
     <div className={styles.container}>
@@ -86,10 +98,10 @@ function App() {
       {isLoading ?
         (<p className={styles.loadingMessage}>Carregando histórias...</p>) // se isLoading == true
         :
-        (<List list={filteredList}/>)    // se isLoading == false
+        (<List list={filteredList} />)    // se isLoading == false
       }
 
-      <hr/>
+      <hr />
 
       <h2>Adicionar Novo Story</h2>
       <form action={submissionStoryAction}>
@@ -103,7 +115,7 @@ function App() {
         </div>
         <button type="submit">Adicionar</button>
         {submissionState?.message && (
-          <p style={{color: submissionState.success ? 'green' : 'red'}}>
+          <p style={{ color: submissionState.success ? 'green' : 'red' }}>
             {submissionState.message}
           </p>
         )}
