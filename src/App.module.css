@@ -1,0 +1,32 @@
+.container {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-family: sans-serif;
+}
+
+.header {
+    color: #333;
+    text-align: center;
+}
+
+.searchLabel {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.searchInput {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.errorMessage {
+    color: red;
+    font-weight: bold;
+}
+
+.loadingMessage {
+    color: blue;
+}
