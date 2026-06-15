@@ -58,8 +58,7 @@ function App() {
           return {
             id: id,
             name: pokemon.name,
-            imageUrl: `https://raw.githubusercontent.com/PokeAPI/
-sprites/master/sprites/pokemon/${id}.png`,
+            imagemUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`,
             url: pokemon.url
           };
 

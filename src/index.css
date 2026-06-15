@@ -109,3 +109,19 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+.pokemon-item {
+display: flex;
+align-items: center;
+margin-bottom: 10px;
+border: 1px solid #eee;
+padding: 10px;
+border-radius: 5px;
+}
+
+.pokemon-item img {
+margin-right: 30px;
+}
+.pokemon-item span {
+font-size: 1.1em;
+}
