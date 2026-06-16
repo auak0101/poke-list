@@ -26,9 +26,10 @@ async function addStoryAction(prevState, formData) {
 }
 
 function App() {
-  const [searchTerm, setSearchTerm] = useSemiPersistentState(
+   const [searchTerm, setSearchTerm] = useSemiPersistentState(
     'searchTerm' || ''
   );
+
 
   const [stories, setStories] = useState([]);          // estados das stories
   const [isLoading, setIsLoading] = useState(false);  // estado de carregamento
@@ -45,6 +46,7 @@ function App() {
     localStorage.setItem('searchTerm', searchTerm);
   }, [searchTerm]);
 
+
   // efeito para buscar dados da API
   useEffect(() => {
     setIsLoading(true); // carregando = true
@@ -58,7 +60,8 @@ function App() {
           return {
             id: id,
             name: pokemon.name,
-            imagemUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`,
+           // imagemUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`,
+             imagemUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/showdown/${id}.gif`,
             url: pokemon.url
           };
 
