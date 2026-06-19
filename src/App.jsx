@@ -26,9 +26,7 @@ async function addStoryAction(prevState, formData) {
 }
 
 function App() {
-   const [searchTerm, setSearchTerm] = useSemiPersistentState(
-    'searchTerm' || ''
-  );
+  
 
 
   const [stories, setStories] = useState([]);          // estados das stories
@@ -37,22 +35,15 @@ function App() {
 
   const [submissionState, submissionStoryAction] = useActionState(addStoryAction, null);
 
-  const handleChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
-  // salva o termo de pesquisa no cache do navegador
-  useEffect(() => {
-    localStorage.setItem('searchTerm', searchTerm);
-  }, [searchTerm]);
 
 
   // efeito para buscar dados da API
   useEffect(() => {
     setIsLoading(true); // carregando = true
     setIsError(false); // diz que por agora não há erro
+let rand = Math.floor(Math.random() * (1020 - 1 + 1)) + 1;
 
-    fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=0`)
+    fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=${rand}`)
       .then(response => response.json())
       .then(async result => {
         const pokemonList = result.results.map(pokemon => {
@@ -75,12 +66,12 @@ function App() {
         setIsError(true);   // define o estado de erro
         setIsLoading(false); // finaliza o carregamento
       })
-  }, [searchTerm])
+  }, [])
 
   // Com verificação de erro
   const filteredList = stories.filter(function (item) {
-    const title = (item && (item.title || item.story_title) || '').toLowerCase();
-    return title.includes(searchTerm.toLowerCase());
+    const name = (item && (item.name || item.story_name) || '').toLowerCase();
+    return name.includes(item.name);
   }
   );
 
@@ -88,11 +79,7 @@ function App() {
   return (
     <div className={styles.container}>
       <h1 className={styles.header}>PoKeMoNs </h1>
-      <Search onSearch={handleChange} searchTerm={searchTerm} />
-
-      <p>Mostrando resultados para "{searchTerm}"</p>
-
-      <hr />
+      
 
       {/* Se isError é true, renderizar logo em seguida o conteúdo após '&&' */}
       {isError && <p className={styles.errorMessage}>Algo deu errado ao carregar as histórias.</p>}
